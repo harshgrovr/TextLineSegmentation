@@ -36,22 +36,43 @@ class ShapesConfig(Config):
     # Train on 1 GPU and 8 images per GPU. We can put multiple images on each
     # GPU because the images are small. Batch size is 8 (GPUs * images/GPU).
     GPU_COUNT = 1
-    IMAGES_PER_GPU = 8
+    IMAGES_PER_GPU = 1
 
     # Number of classes (including background)
-    NUM_CLASSES = 1 + 3  # background + 3 shapes
+    NUM_CLASSES = 1 + 1  # background + 3 shapes
 
     # Use small images for faster training. Set the limits of the small side
     # the large side, and that determines the image shape.
-    IMAGE_MIN_DIM = 128
-    IMAGE_MAX_DIM = 128
+    
+#New Data Start
+    
+    IMAGE_MIN_DIM = 1024
+    IMAGE_MAX_DIM = 1024
+    
+    POST_NMS_ROIS_TRAINING = 1000
+    POST_NMS_ROIS_INFERENCE = 2000
+    
+     # Non-max suppression threshold to filter RPN proposals.
+    # You can increase this during training to generate more 
+    #propsals.
+    RPN_NMS_THRESHOLD = 0.9
 
+    # How many anchors per image to use for RPN training
+    RPN_TRAIN_ANCHORS_PER_IMAGE = 64
+    MEAN_PIXEL = np.array([43.53, 39.56, 48.22])
+    USE_MINI_MASK = True
+    MINI_MASK_SHAPE = (56, 56)  # (height, width) of the mini-mask
+    TRAIN_ROIS_PER_IMAGE = 128
+    MAX_GT_INSTANCES = 200
+    DETECTION_MAX_INSTANCES = 400
+
+# New data End
     # Use smaller anchors because our image and objects are small
     RPN_ANCHOR_SCALES = (8, 16, 32, 64, 128)  # anchor side in pixels
 
     # Reduce training ROIs per image because the images are small and have
     # few objects. Aim to allow ROI sampling to pick 33% positive ROIs.
-    TRAIN_ROIS_PER_IMAGE = 32
+   #Commenting it out # TRAIN_ROIS_PER_IMAGE = 32
 
     # Use a small epoch since the data is simple
     STEPS_PER_EPOCH = 100

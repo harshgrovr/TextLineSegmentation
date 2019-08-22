@@ -7,12 +7,16 @@ Licensed under the MIT License (see LICENSE for details)
 Written by Waleed Abdulla
 """
 
+
 import os
 import random
 import datetime
 import re
 import math
 import logging
+from keras.models import Sequential
+from keras.layers import Dense
+import matplotlib.pyplot as plt
 from collections import OrderedDict
 import multiprocessing
 import numpy as np
@@ -22,6 +26,7 @@ import keras.backend as K
 import keras.layers as KL
 import keras.engine as KE
 import keras.models as KM
+# Visualize training history
 
 from mrcnn import utils
 
@@ -2360,8 +2365,9 @@ class MaskRCNN():
             workers = 0
         else:
             workers = multiprocessing.cpu_count()
-
-        self.keras_model.fit_generator(
+       
+        
+        history=self.keras_model.fit_generator(
             train_generator,
             initial_epoch=self.epoch,
             epochs=epochs,
@@ -2371,9 +2377,38 @@ class MaskRCNN():
             validation_steps=self.config.VALIDATION_STEPS,
             max_queue_size=100,
             workers=workers,
+            
             use_multiprocessing=True,
         )
-        self.epoch = max(self.epoch, epochs)
+       
+        print('Validation Loss \n')
+        plt.xticks(np.arange(0, epochs, 1.0))
+        plt.plot(history.history['val_loss'])
+        plt.plot(history.history['val_rpn_class_loss'])
+        plt.plot(history.history['val_rpn_bbox_loss'])
+        plt.plot(history.history['val_mrcnn_class_loss'])
+        plt.plot(history.history['val_mrcnn_bbox_loss'])
+        plt.plot(history.history['val_mrcnn_mask_loss'])
+        plt.title('Val Losses')
+        plt.ylabel('Loss')
+        plt.xlabel('epoch')
+        plt.legend(['val_loss', 'val_rpn_class_loss', 'val_rpn_bbox_loss', 'val_mrcnn_class_loss', 'val_mrcnn_bbox_loss', 'val_mrcnn_mask_loss'], loc='upper right')
+        plt.show()
+        
+         
+        print('Train Loss \n')
+        plt.xticks(np.arange(0, epochs, 1.0))
+        plt.plot(history.history['loss'])
+        plt.plot(history.history['rpn_class_loss'])
+        plt.plot(history.history['rpn_bbox_loss'])
+        plt.plot(history.history['mrcnn_class_loss'])
+        plt.plot(history.history['mrcnn_bbox_loss'])
+        plt.plot(history.history['mrcnn_mask_loss'])
+        plt.title('Train Losses')
+        plt.ylabel('Loss')
+        plt.xlabel('epoch')
+        plt.legend(['loss', 'rpn_class_loss', 'rpn_bbox_loss', 'mrcnn_class_loss', 'mrcnn_bbox_loss', 'mrcnn_mask_loss'], loc='upper right')
+        plt.show()
 
     def mold_inputs(self, images):
         """Takes a list of images and modifies them to the format expected
