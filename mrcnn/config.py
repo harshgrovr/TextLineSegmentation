@@ -1,7 +1,6 @@
 """
 Mask R-CNN
 Base Configurations class.
-
 Copyright (c) 2017 Matterport, Inc.
 Licensed under the MIT License (see LICENSE for details)
 Written by Waleed Abdulla
@@ -89,7 +88,7 @@ class Config(object):
     RPN_NMS_THRESHOLD = 0.7
 
     # How many anchors per image to use for RPN training
-    RPN_TRAIN_ANCHORS_PER_IMAGE = 320
+    RPN_TRAIN_ANCHORS_PER_IMAGE = 256
     
     # ROIs kept after tf.nn.top_k and before non-maximum suppression
     PRE_NMS_LIMIT = 6000
@@ -137,16 +136,14 @@ class Config(object):
     IMAGE_CHANNEL_COUNT = 3
 
     # Image mean (RGB)
-    #MEAN_PIXEL = np.array([123.7, 116.8, 103.9])
-    MEAN_PIXEL = np.array([0., 0., 0.])
+    MEAN_PIXEL = np.array([123.7, 116.8, 103.9])
 
     # Number of ROIs per image to feed to classifier/mask heads
     # The Mask RCNN paper uses 512 but often the RPN doesn't generate
     # enough positive proposals to fill this and keep a positive:negative
     # ratio of 1:3. You can increase the number of proposals by adjusting
     # the RPN NMS threshold.
-    #TRAIN_ROIS_PER_IMAGE = 200
-    TRAIN_ROIS_PER_IMAGE = 600
+    TRAIN_ROIS_PER_IMAGE = 200
 
     # Percent of positive ROIs used to train classifier/mask heads
     ROI_POSITIVE_RATIO = 0.33
