@@ -2518,6 +2518,7 @@ class MaskRCNN():
         return boxes, class_ids, scores, full_masks
 
     def detect(self, images, verbose=0):
+        print('detecting')
         """Runs the detection pipeline.
 
         images: List of images, potentially of different sizes.
@@ -2563,10 +2564,12 @@ class MaskRCNN():
         # Process detections
         results = []
         for i, image in enumerate(images):
+            print('unmmolding image)
             final_rois, final_class_ids, final_scores, final_masks =\
                 self.unmold_detections(detections[i], mrcnn_mask[i],
                                        image.shape, molded_images[i].shape,
                                        windows[i])
+            print(final_rois)
             results.append({
                 "rois": final_rois,
                 "class_ids": final_class_ids,
