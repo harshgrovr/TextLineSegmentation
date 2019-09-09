@@ -2563,13 +2563,11 @@ class MaskRCNN():
             self.keras_model.predict([molded_images, image_metas, anchors], verbose=0)
         # Process detections
         results = []
-        for i, image in enumerate(images):
-            print('unmmolding image)
+        for i, image in enumerate(images):            
             final_rois, final_class_ids, final_scores, final_masks =\
                 self.unmold_detections(detections[i], mrcnn_mask[i],
                                        image.shape, molded_images[i].shape,
-                                       windows[i])
-            print(final_rois)
+                                       windows[i])            
             results.append({
                 "rois": final_rois,
                 "class_ids": final_class_ids,
